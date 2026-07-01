@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — SecureAuth</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <span class="logo">⬡ SecureAuth</span>
+      <button class="btn-ghost" onclick="logout()">Log out</button>
+    </header>
+
+    <main class="dashboard-wrap">
+      <div class="card dashboard-card">
+        <div class="badge">Authenticated</div>
+        <h2 class="dash-title">You&rsquo;re in.</h2>
+        <p class="dash-sub">Your session is active and your token is valid.</p>
+
+        <div class="user-info" id="user-info">
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value" id="user-email">Loading…</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">User ID</span>
+            <span class="info-value" id="user-id">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Account created</span>
+            <span class="info-value" id="user-created">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Token stored</span>
+            <span class="info-value token-pill">sessionStorage</span>
+          </div>
+        </div>
+
+        <div class="endpoint-block">
+          <p class="endpoint-label">Try the protected endpoint directly:</p>
+          <code class="endpoint-code">GET /me &nbsp; Authorization: Bearer &lt;token&gt;</code>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
