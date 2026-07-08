@@ -361,3 +361,117 @@ Port mapping still needs work:
   right side = inside container port
   different because nginx listens on 80 inside
   but we access it on 3000 outside
+
+## Session 5 - Phase 4 Complete + Git Workflow
+Date:
+
+### What I did today:
+- Fixed health check error (curl not in slim image)
+- Added curl to backend Dockerfile
+- Ran docker compose up --build successfully
+- Logged in through real UI (not Swagger)
+- Frontend and backend talking through Docker network
+- Created feature/docker-setup branch
+- Opened first Pull Request on GitHub
+- Reviewed files changed tab
+- Merged PR into main
+- Learned full Git branch workflow
+
+### Docker Compose is now working:
+- One command starts everything: docker compose up --build
+- Frontend at http://localhost:3000
+- Backend at http://localhost:8000
+- Both on same Docker network
+- Backend health check passes before frontend starts
+- Full login flow works end to end
+
+### Health check fix:
+Problem: curl not installed in python:3.12-slim
+Fix: Add to Dockerfile:
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+Why one line:
+- Each RUN creates a Docker layer
+- Cleanup on same line actually reduces image size
+- Separate lines = cleanup stored in previous layer = no size reduction
+
+### Git workflow learned:
+Full professional workflow:
+1. git checkout main
+2. git pull origin main
+3. git checkout -b feature/name
+4. do your work
+5. git add .
+6. git commit -m "description"
+7. git push origin feature/name
+8. Open PR on GitHub
+9. Review files changed
+10. Merge PR
+11. Delete branch
+12. Repeat
+
+### Git commands learned:
+git branch              → shows all branches, * = current branch
+git checkout main       → switch to main branch
+git checkout -b name    → create new branch and switch to it
+git stash               → temporarily save uncommitted changes
+git stash pop           → bring stashed changes back
+git pull origin main    → download latest from GitHub
+git push origin branch  → upload branch to GitHub
+
+### Key concepts:
+Pull Request (PR)
+  → request to merge a branch into main
+  → reviewer checks Files changed tab
+  → leaves comments on specific lines
+  → approves or requests changes
+  → only then can it be merged
+
+Branch protection (coming in Phase 5):
+  → nobody can push directly to main
+  → every change must go through PR
+  → tests must pass before merging allowed
+
+git push vs git pull:
+  push → sends commits UP to GitHub
+  pull → downloads changes FROM GitHub
+  (pull request is different - it is a merge request on GitHub)
+
+git stash:
+  → temporary drawer for uncommitted work
+  → lets you switch branches without losing work
+  → git stash     = put in drawer
+  → git stash pop = take out of drawer
+
+Absolute vs relative paths:
+  /backend  → from root of system (wrong)
+  backend/  → from current folder (correct)
+
+### Colors in terminal output:
+Green ✔  → success
+Yellow   → waiting or warning
+Red      → error or failed
+Blue     → informational
+
+### Phase 4 complete:
+✅ docker-compose.yml written from scratch
+✅ Frontend and backend connected on same network
+✅ Health check working
+✅ Full app working end to end in Docker
+✅ First PR opened and merged
+✅ Git branch workflow practiced
+
+### Next session - Phase 5: GitHub Actions
+- Create .github/workflows/ folder
+- Write ci.yml from scratch
+- Triggers, jobs, steps explained
+- Run tests automatically on every push
+- Build Docker images in pipeline
+- Watch pipeline run in real time on GitHub
+- Green ticks = pass, Red X = fail
+- Add GitHub Secrets for SECRET_KEY
+
+### Score: 4/5
+Remember:
+git pull → downloads code FROM GitHub to your machine
+         → nothing to do with merging branches
