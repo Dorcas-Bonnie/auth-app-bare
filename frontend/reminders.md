@@ -15,3 +15,8 @@ setup.sh           → set up environment on a new server
 healthcheck.sh     → check if all services are running
 backup.sh          → backup the database
 rollback.sh        → roll back to previous version
+
+git checkout main
+git pull origin main
+git merge feature/github-actions
+git push origin main
