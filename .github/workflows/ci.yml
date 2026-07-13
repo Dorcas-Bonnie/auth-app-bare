@@ -43,6 +43,11 @@ jobs:
       - name: Fix bcrypt version
         run: pip install bcrypt==4.0.1
 
+      - name: Run Bandit Security scan
+        run: |
+          pip install Bandit
+          bandit -r backend/ -ll
+
       - name: Run tests
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
