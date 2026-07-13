@@ -67,3 +67,53 @@ jobs:
 
       - name: Build frontend image
         run: docker build -t auth-frontend ./frontend
+
+  container-scan:
+    name: Scan Container and Dependencies
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build backend image for scanning
+        run: docker build -t auth-backend ./backend
+
+      - name: Build Frontend image for scanning
+        run: docker build -t auth-frontend ./frontend
+
+      - name: Scan backend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: auth-backend
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: '0'
+
+      - name: Scan Frontend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: auth-frontend
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: '0'
+
+      - name: Install Python dependencies for Snyk
+        run: pip install -r backend/requirements.txt
+
+      - name: Fix bcrypt for Snyk
+        run: pip install bcrypt==4.0.1
+
+      - name: install snyk
+        run: npm install -g snyk
+
+      - name: Scan dependencies with Snyk
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --file=backend/requirements.txt --skip-unresolved
+
+
+        
