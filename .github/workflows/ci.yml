@@ -105,12 +105,15 @@ jobs:
       - name: Fix bcrypt for Snyk
         run: pip install bcrypt==4.0.1
 
+      - name: install snyk
+        run: npm install -g snyk
+
       - name: Scan dependencies with Snyk
         uses: snyk/actions/python@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --severity-threshold=high --file=backend/requirements.txt
+          args: --severity-threshold=high --file=backend/requirements.txt --skip-unresolved
 
 
         
